@@ -1,0 +1,7 @@
+POST http://localhost:3500/note
+Content-Type: application/json
+
+{
+    "title": "title1",
+    "content": "content1"
+}
