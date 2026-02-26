@@ -1,5 +1,10 @@
 import Sentiment from "sentiment";
 
+const sortingObj = (obj) => {
+  const sorted = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+  return Object.fromEntries(sorted);
+};
+
 const noteAnalysis = (note) => {
   const text = note.content;
   const wordMatching = text.match(/\b[A-Za-z0-9]+\b/g) || [];
@@ -32,6 +37,13 @@ const noteAnalysis = (note) => {
 
   let sentiment = new Sentiment();
   const result = sentiment.analyze(text);
+
+  [summ.punctMarks, summ.symbols, summ.words, summ.numbers] = [
+    sortingObj(summ.punctMarks),
+    sortingObj(summ.symbols),
+    sortingObj(summ.words),
+    sortingObj(summ.numbers),
+  ];
 
   return { summ, result };
 };

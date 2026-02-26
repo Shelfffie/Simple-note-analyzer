@@ -1,15 +1,24 @@
-POST http://localhost:3000/note
-Content-Type: application/json
+POST http://localhost:3005/note
+
+
+###
+
+GET http://localhost:3005/note
+
+###
+
+GET http://localhost:3005/note/699dedf6d9bf3d1dbc688ade
+
+###
+PUT http://localhost:3005/note/699ef55e72483c3f92b274e3
+content-type: application/json
 
 {
-    "title": "title1234",
-    "content": "Ignorant saw her her drawings marriage laughter. Case oh an that or away sigh do here upon. Acuteness you exquisite ourselves now end forfeited. Enquire ye without it garrets up himself. Interest our nor received followed was. Cultivated an up solicitude mr unpleasant. "
+    "title": "hello!! again",
+    "content": "hello from content"
 }
 
-###
-
-GET http://localhost:3000/note
 
 ###
 
-GET http://localhost:3000/note/699dedf6d9bf3d1dbc688ade
+GET http://localhost:3010/note/699ef55e72483c3f92b274e3?analysis=true

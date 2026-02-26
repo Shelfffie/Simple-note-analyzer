@@ -1,0 +1,78 @@
+.note-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 200px;
+  padding: 20px;
+  border: 5px grey solid;
+  border-radius: 5px;
+  font-size: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+}
+
+.note:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.title {
+  margin: 0;
+}
+
+.no-content {
+  color: dimgray;
+}
+
+.note-page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.note-info {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 20px;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+.note-info * {
+  border: 0;
+  border-radius: 5px;
+}
+
+.title-input {
+  height: 80px;
+  width: 50%;
+  padding: 5px;
+  color: white;
+  font-size: 50px;
+  background-color: grey;
+}
+
+.content-textarea {
+  font-size: 30px;
+  height: 400px;
+  width: 50%;
+}
+
+.analysis-block {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+.analyzed-info {
+  display: flex;
+  flex-direction: row;
+}
