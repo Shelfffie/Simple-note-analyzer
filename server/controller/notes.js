@@ -1,20 +1,19 @@
 import Note from "../database/models/notes-model.js";
 import noteAnalysis from "../services/string_analyst.js";
+import { headerAndReq } from "../utils/utils.js";
 
 const createEmptyNote = async (req, res) => {
   try {
     let [title, content] = ["", ""];
     const note = new Note({ title, content });
     await note.save();
-    res.writeHead(201, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ message: "Note is created!", note: note }));
+    headerAndReq(201, { message: "Note is created!", note: note });
   } catch (error) {
     console.error(
       "An error occurred during creation in createEmprtyNote:",
       error
     );
-    res.writeHead(500, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ error: "Server error" }));
+    headerAndReq(500, { error: "Server error" });
   }
 };
 
@@ -35,8 +34,7 @@ const updateNote = async (req, res) => {
         const { title, content } = data;
 
         if (!title && !content) {
-          res.writeHead(400, { "Content-type": "application/json" });
-          return res.end(JSON.stringify({ error: "Missing field." }));
+          headerAndReq(400, { error: "Missing field." });
         }
 
         const note = await Note.findByIdAndUpdate(
@@ -48,25 +46,20 @@ const updateNote = async (req, res) => {
         );
 
         if (!note || note.length === 0) {
-          res.writeHead(404, { "Content-type": "application/json" });
-          return res.end(JSON.stringify({ message: "No notes found" }));
+          headerAndReq(404, { message: "No notes found" });
         }
-
-        res.writeHead(200, { "Content-type": "application/json" });
-        res.end(JSON.stringify({ note }));
+        headerAndReq(200, { note });
       } catch (error) {
         console.error(
           "An error occurred during creation in createNote:",
           error
         );
-        res.writeHead(500, { "Content-type": "application/json" });
-        res.end(JSON.stringify({ error: "Server error" }));
+        headerAndReq(500, { error: "Server error" });
       }
     });
   } catch (error) {
     console.error("An error occurred during creation in createNote:", error);
-    res.writeHead(500, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ error: "Server error" }));
+    headerAndReq(500, { error: "Server error" });
   }
 };
 
@@ -78,10 +71,7 @@ const getNoteByIdAndAnalyse = async (req, res) => {
     const note = await Note.findById(noteId);
 
     if (!note) {
-      res.writeHead(404, { "Content-type": "application/json" });
-      return res.end(
-        JSON.stringify({ error: "There is no note with this Id" })
-      );
+      headerAndReq(404, { error: "There is no note with this Id" });
     }
 
     const noteObj = note.toObject();
@@ -89,12 +79,10 @@ const getNoteByIdAndAnalyse = async (req, res) => {
       noteObj.analyzed = noteAnalysis(note);
     }
 
-    res.writeHead(200, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ note: noteObj }));
+    headerAndReq(200, { note: noteObj });
   } catch (error) {
     console.error("An error occurred during getting in getNoreById:", error);
-    res.writeHead(500, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ error: "Server error" }));
+    headerAndReq(500, { error: "Server error" });
   }
 };
 
@@ -102,16 +90,13 @@ const getAllNotes = async (req, res) => {
   try {
     const notes = await Note.find({});
     if (!notes || notes.length === 0) {
-      res.writeHead(404, { "Content-type": "application/json" });
-      return res.end(JSON.stringify({ message: "No notes found" }));
+      headerAndReq(404, { message: "No notes found" });
     }
 
-    res.writeHead(200, { "Content-type": "application/json" });
-    res.end(JSON.stringify(notes));
+    headerAndReq(200, notes);
   } catch (error) {
     console.error("An error occurred during getting in getNotes:", error);
-    res.writeHead(500, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ error: "Server error" }));
+    headerAndReq(500, { error: "Server error" });
   }
 };
 
