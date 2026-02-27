@@ -6,8 +6,8 @@ const createEmptyNote = async (req, res) => {
     let [title, content] = ["", ""];
     const note = new Note({ title, content });
     await note.save();
-    res.writeHead(200, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ message: "Note is created!" }));
+    res.writeHead(201, { "Content-type": "application/json" });
+    res.end(JSON.stringify({ message: "Note is created!", note: note }));
   } catch (error) {
     console.error(
       "An error occurred during creation in createEmprtyNote:",
