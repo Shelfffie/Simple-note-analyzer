@@ -97,7 +97,6 @@ export function Analysis({ id }: { id: string | undefined }) {
       <section className="analysis-buttons">
         <button onClick={fetchData}>Analyze again</button>
         <button onClick={handleDownload}>Download analysis</button>
-        <button>Delete note</button>
       </section>
     </main>
   );

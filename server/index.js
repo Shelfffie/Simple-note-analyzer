@@ -4,6 +4,7 @@ import {
   createEmptyNote,
   getNoteByIdAndAnalyse,
   getAllNotes,
+  deleteNote,
 } from "./controller/notes.js";
 import connectDB from "./database/connect.js";
 
@@ -39,6 +40,9 @@ const server = http.createServer((req, res) => {
         break;
       case "PUT":
         updateNote(req, res);
+        break;
+      case "DELETE":
+        deleteNote(req, res);
         break;
     }
   }

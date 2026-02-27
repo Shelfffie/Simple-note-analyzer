@@ -5,6 +5,7 @@ import { useDebounce } from "../hooks/use-debounce";
 import { useParams } from "react-router-dom";
 import { Analysis } from "./analysis";
 import { handleAxiosError } from "../utils/handle-axios.errors";
+import { useNavigate } from "react-router-dom";
 
 export function GetNote() {
   const [note, setNote] = useState<Note>({
@@ -17,6 +18,7 @@ export function GetNote() {
   const [originalNote, setOriginalNote] = useState<Note>();
   const debouncedNote = useDebounce(note, 1000);
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getNote = async () => {
@@ -67,6 +69,17 @@ export function GetNote() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:3010/note/${id}`);
+      if (response.status === 200) {
+        navigate("/");
+      }
+    } catch (error) {
+      handleAxiosError(error);
+    }
+  };
+
   return (
     <>
       <main className="note-page">
@@ -85,8 +98,11 @@ export function GetNote() {
             placeholder="Input the content..."
             value={note?.content || ""}
             onChange={(e) => handleChange(e, "content")}
-          />
-        </section>
+          />{" "}
+          <div>
+            <button onClick={handleDelete}>Delete note</button>
+          </div>
+        </section>{" "}
         <Analysis id={id} />
       </main>
     </>

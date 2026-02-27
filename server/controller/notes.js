@@ -35,6 +35,7 @@ const updateNote = async (req, res) => {
 
         if (!title && !content) {
           headerAndReq(res, 400, { error: "Missing field." });
+          return;
         }
 
         const note = await Note.findByIdAndUpdate(
@@ -47,6 +48,7 @@ const updateNote = async (req, res) => {
 
         if (!note || note.length === 0) {
           headerAndReq(res, 404, { message: "No notes found" });
+          return;
         }
         headerAndReq(res, 200, { note });
       } catch (error) {
@@ -72,6 +74,7 @@ const getNoteByIdAndAnalyse = async (req, res) => {
 
     if (!note) {
       headerAndReq(res, 404, { error: "There is no note with this Id" });
+      return;
     }
 
     const noteObj = note.toObject();
@@ -91,6 +94,7 @@ const getAllNotes = async (req, res) => {
     const notes = await Note.find({});
     if (!notes || notes.length === 0) {
       headerAndReq(res, 404, { message: "No notes found" });
+      return;
     }
 
     headerAndReq(res, 200, notes);
@@ -100,4 +104,28 @@ const getAllNotes = async (req, res) => {
   }
 };
 
-export { updateNote, createEmptyNote, getNoteByIdAndAnalyse, getAllNotes };
+const deleteNote = async (req, res) => {
+  try {
+    const noteId = req.url.split("/")[2];
+    const note = await Note.findById(noteId);
+
+    if (!note) {
+      headerAndReq(res, 404, { error: "There is no note with this Id" });
+      return;
+    }
+
+    await Note.findByIdAndDelete(noteId);
+    headerAndReq(res, 200, { message: "Successfully deleted!" });
+  } catch (error) {
+    console.error("An error occurred during deletion in getNotes:", error);
+    headerAndReq(res, 500, { error: "Server error" });
+  }
+};
+
+export {
+  updateNote,
+  createEmptyNote,
+  getNoteByIdAndAnalyse,
+  getAllNotes,
+  deleteNote,
+};
