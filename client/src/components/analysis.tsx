@@ -46,6 +46,19 @@ export function Analysis({ id }: { id: string | undefined }) {
     );
   };
 
+  const runArrAndGetItems = (arr: string[]) => {
+    if (arr.length === 0) {
+      return <p>0</p>;
+    }
+    return (
+      <ul>
+        {arr.map((el, index) => (
+          <li key={index}>{el}</li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <main className="analysis-block">
       {analyzed && (
@@ -74,25 +87,9 @@ export function Analysis({ id }: { id: string | undefined }) {
                 Comparative: <span>{analyzed.result.comparative}</span>
               </h4>
               <h4>Positive words:</h4>
-              {analyzed?.result?.positive.length > 0 ? (
-                <ul>
-                  {analyzed.result.positive.map((p, index) => (
-                    <li key={index}>{p}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p>0</p>
-              )}
+              {runArrAndGetItems(analyzed?.result?.positive)}
               <h4>Negative words:</h4>
-              {analyzed?.result?.negative.length > 0 ? (
-                <ul>
-                  {analyzed.result.negative.map((p, index) => (
-                    <li key={index}> {p} </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>0</p>
-              )}
+              {runArrAndGetItems(analyzed?.result?.negative)}
             </div>
           </div>
         </>
@@ -100,6 +97,7 @@ export function Analysis({ id }: { id: string | undefined }) {
       <section className="analysis-buttons">
         <button onClick={fetchData}>Analyze again</button>
         <button onClick={handleDownload}>Download analysis</button>
+        <button>Delete note</button>
       </section>
     </main>
   );
