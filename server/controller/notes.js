@@ -7,13 +7,13 @@ const createEmptyNote = async (req, res) => {
     let [title, content] = ["", ""];
     const note = new Note({ title, content });
     await note.save();
-    headerAndReq(201, { message: "Note is created!", note: note });
+    headerAndReq(res, 201, { message: "Note is created!", note: note });
   } catch (error) {
     console.error(
       "An error occurred during creation in createEmprtyNote:",
       error
     );
-    headerAndReq(500, { error: "Server error" });
+    headerAndReq(res, 500, { error: "Server error" });
   }
 };
 
@@ -34,7 +34,7 @@ const updateNote = async (req, res) => {
         const { title, content } = data;
 
         if (!title && !content) {
-          headerAndReq(400, { error: "Missing field." });
+          headerAndReq(res, 400, { error: "Missing field." });
         }
 
         const note = await Note.findByIdAndUpdate(
@@ -46,20 +46,20 @@ const updateNote = async (req, res) => {
         );
 
         if (!note || note.length === 0) {
-          headerAndReq(404, { message: "No notes found" });
+          headerAndReq(res, 404, { message: "No notes found" });
         }
-        headerAndReq(200, { note });
+        headerAndReq(res, 200, { note });
       } catch (error) {
         console.error(
           "An error occurred during creation in createNote:",
           error
         );
-        headerAndReq(500, { error: "Server error" });
+        headerAndReq(res, 500, { error: "Server error" });
       }
     });
   } catch (error) {
     console.error("An error occurred during creation in createNote:", error);
-    headerAndReq(500, { error: "Server error" });
+    headerAndReq(res, 500, { error: "Server error" });
   }
 };
 
@@ -71,7 +71,7 @@ const getNoteByIdAndAnalyse = async (req, res) => {
     const note = await Note.findById(noteId);
 
     if (!note) {
-      headerAndReq(404, { error: "There is no note with this Id" });
+      headerAndReq(res, 404, { error: "There is no note with this Id" });
     }
 
     const noteObj = note.toObject();
@@ -79,10 +79,10 @@ const getNoteByIdAndAnalyse = async (req, res) => {
       noteObj.analyzed = noteAnalysis(note);
     }
 
-    headerAndReq(200, { note: noteObj });
+    headerAndReq(res, 200, { note: noteObj });
   } catch (error) {
     console.error("An error occurred during getting in getNoreById:", error);
-    headerAndReq(500, { error: "Server error" });
+    headerAndReq(res, 500, { error: "Server error" });
   }
 };
 
@@ -90,13 +90,13 @@ const getAllNotes = async (req, res) => {
   try {
     const notes = await Note.find({});
     if (!notes || notes.length === 0) {
-      headerAndReq(404, { message: "No notes found" });
+      headerAndReq(res, 404, { message: "No notes found" });
     }
 
-    headerAndReq(200, notes);
+    headerAndReq(res, 200, notes);
   } catch (error) {
     console.error("An error occurred during getting in getNotes:", error);
-    headerAndReq(500, { error: "Server error" });
+    headerAndReq(res, 500, { error: "Server error" });
   }
 };
 
