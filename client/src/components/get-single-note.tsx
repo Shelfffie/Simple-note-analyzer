@@ -4,6 +4,7 @@ import { Note } from "../types/types";
 import { useDebounce } from "../hooks/use-debounce";
 import { useParams } from "react-router-dom";
 import { Analysis } from "./analysis";
+import { handleAxiosError } from "../utils/handle-axios.errors";
 
 export function GetNote() {
   const [note, setNote] = useState<Note>({
@@ -26,14 +27,7 @@ export function GetNote() {
           setOriginalNote(response.data.note);
         }
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(
-            "Server error:",
-            error.response ? error.response.data : error.message
-          );
-        } else {
-          console.log("Unknown error:", error);
-        }
+        handleAxiosError(error);
       }
     };
 
@@ -55,14 +49,7 @@ export function GetNote() {
         });
         console.log("sended");
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(
-            "Server error:",
-            error.response ? error.response.data : error.message
-          );
-        } else {
-          console.log("Unknown error:", error);
-        }
+        handleAxiosError(error);
       }
     };
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Analyzed, Note } from "../types/types";
 import { UseBlob } from "../hooks/blob";
+import { handleAxiosError } from "../utils/handle-axios.errors";
 
 export function Analysis({ id }: { id: string | undefined }) {
   const [analyzed, setAnalyzed] = useState<Analyzed>();
@@ -13,12 +14,16 @@ export function Analysis({ id }: { id: string | undefined }) {
   }, []);
 
   async function fetchData() {
-    const response = await axios.get(`http://localhost:3010/note/${id}`, {
-      params: { analysis: true },
-    });
-    if (response.status === 200) {
-      setAnalyzed(response.data.note.analyzed);
-      setAllData(response.data.note);
+    try {
+      const response = await axios.get(`http://localhost:3010/note/${id}`, {
+        params: { analysis: true },
+      });
+      if (response.status === 200) {
+        setAnalyzed(response.data.note.analyzed);
+        setAllData(response.data.note);
+      }
+    } catch (error) {
+      handleAxiosError(error);
     }
   }
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Note } from "../types/types";
 import { useNavigate } from "react-router-dom";
+import { handleAxiosError } from "../utils/handle-axios.errors";
 
 function GetNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -15,14 +16,7 @@ function GetNotes() {
           setNotes(response.data);
         }
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(
-            "Server error:",
-            error.response ? error.response.data : error.message
-          );
-        } else {
-          console.log("Unknown error:", error);
-        }
+        handleAxiosError(error);
       }
     };
 
@@ -36,14 +30,7 @@ function GetNotes() {
         setNotes((prev) => [...prev, response.data.note]);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(
-          "Server error:",
-          error.response ? error.response.data : error.message
-        );
-      } else {
-        console.log("Unknown error:", error);
-      }
+      handleAxiosError(error);
     }
   };
 
