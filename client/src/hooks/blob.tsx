@@ -1,7 +1,21 @@
 import { Note } from "../types/types";
-import { useMemo } from "react";
 
 export function UseBlob({ dataToLoad }: { dataToLoad?: Note }) {
+  let createDate: Date | null = dataToLoad
+    ? new Date(dataToLoad.createdAt)
+    : null;
+  let updateDate: Date | null = dataToLoad
+    ? new Date(dataToLoad.updatedAt)
+    : null;
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
   const getKeyAndValue = (obj: Record<string, unknown>, limit?: number) => {
     if (!obj || Object.keys(obj).length === 0) {
       return `0`;
@@ -29,32 +43,38 @@ export function UseBlob({ dataToLoad }: { dataToLoad?: Note }) {
     return newArr;
   };
 
-  const text = `Title: ${dataToLoad?.title}\n\nContent: ${
+  const text = `Title: \n${dataToLoad?.title}\n\n##########\n\nContent: \n${
     dataToLoad?.content
-  }\n\nCreated at: ${dataToLoad?.created_at}\n\nLast update: ${
-    dataToLoad?.updated_at
-  }\n\n\nAnalyze:\n\nLongest word: ${
+  }\n\n##########\n\nCreated at: \n${
+    createDate
+      ? createDate.toLocaleString("en-GB", options)
+      : dataToLoad?.createdAt
+  }\n\n##########\n\nLast update:\n ${
+    updateDate
+      ? updateDate.toLocaleString("en-GB", options)
+      : dataToLoad?.updatedAt
+  }\n\n##########\n\nLongest word:\n ${
     dataToLoad?.analyzed?.summ.longestWord
-  }\n\nPunctuation marks: ${getKeyAndValue(
+  }\n\n##########\n\nPunctuation marks: \n${getKeyAndValue(
     dataToLoad?.analyzed?.summ?.punctMarks ?? {}
-  )}\n\nThe first five most common words:: ${getKeyAndValue(
+  )}\n\n##########\n\nThe first five most common words: \n${getKeyAndValue(
     dataToLoad?.analyzed?.summ?.words ?? {},
     5
-  )}\n\nSymbols: ${getKeyAndValue(
+  )}\n\n##########\n\nSymbols: \n${getKeyAndValue(
     dataToLoad?.analyzed?.summ?.symbols ?? {}
-  )}\n\nNumbers: ${getKeyAndValue(
+  )}\n\n##########\n\nNumbers:\n ${getKeyAndValue(
     dataToLoad?.analyzed?.summ?.numbers ?? {}
-  )}\n\n\nSentiment result:\nScore: ${
+  )}\n\n##########\n\nScore: ${
     dataToLoad?.analyzed?.result.score
-  }\n\nComparative:  ${
+  }\n\n##########\n\nComparative:  ${
     dataToLoad?.analyzed?.result.comparative
-  }\n\nCalculation:${arrMap(
+  }\n\n##########\n\nCalculation:${arrMap(
     dataToLoad?.analyzed?.result?.calculation ?? []
-  )}\n\nPositive words: ${arrMap(
+  )}\n\n##########\n\nPositive words: ${arrMap(
     dataToLoad?.analyzed?.result?.positive ?? []
-  )}\n\n Negative words: ${arrMap(
+  )}\n\n##########\n\n Negative words: ${arrMap(
     dataToLoad?.analyzed?.result?.negative ?? []
-  )}\n\n\n\nAll words and their frequency: ${getKeyAndValue(
+  )}\n\n##########\n\nAll words and their frequency: ${getKeyAndValue(
     dataToLoad?.analyzed?.summ?.words ?? {}
   )}`;
 

@@ -13,8 +13,6 @@
   border: 5px grey solid;
   border-radius: 5px;
   font-size: 20px;
-  overflow: hidden;
-  text-overflow: ellipsis;
   transition: all 0.3s ease;
 }
 
@@ -27,8 +25,25 @@
   margin: 0;
 }
 
+.content {
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .no-content {
   color: dimgray;
+}
+
+.add-note-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  height: 70px;
+  width: 70px;
+  font-size: 50px;
 }
 
 .note-page {
@@ -82,4 +97,11 @@
 }
 .analyzed-info * {
   list-style: none;
+}
+
+.analysis-buttons {
+  display: flex;
+  gap: 29px;
+  flex-direction: row;
+  justify-content: center;
 }

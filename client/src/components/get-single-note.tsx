@@ -10,8 +10,8 @@ export function GetNote() {
     _id: "",
     title: "",
     content: "",
-    created_at: "",
-    updated_at: "",
+    createdAt: "",
+    updatedAt: "",
   });
   const [originalNote, setOriginalNote] = useState<Note>();
   const debouncedNote = useDebounce(note, 1000);

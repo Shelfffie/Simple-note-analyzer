@@ -29,6 +29,24 @@ function GetNotes() {
     getNotes();
   }, []);
 
+  const createNewNote = async () => {
+    try {
+      const response = await axios.post("http://localhost:3010/note");
+      if (response.status === 201) {
+        setNotes((prev) => [...prev, response.data.note]);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(
+          "Server error:",
+          error.response ? error.response.data : error.message
+        );
+      } else {
+        console.log("Unknown error:", error);
+      }
+    }
+  };
+
   return (
     <>
       <main>
@@ -49,10 +67,12 @@ function GetNotes() {
               ) : (
                 <p className="content">{note.content}</p>
               )}
-              <p className="update">{note.updated_at}</p>
             </li>
           ))}
         </ul>
+        <button className="add-note-button" onClick={createNewNote}>
+          +
+        </button>
       </main>
     </>
   );

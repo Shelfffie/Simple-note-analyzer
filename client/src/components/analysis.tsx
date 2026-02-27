@@ -19,7 +19,6 @@ export function Analysis({ id }: { id: string | undefined }) {
     if (response.status === 200) {
       setAnalyzed(response.data.note.analyzed);
       setAllData(response.data.note);
-      console.log(response.data);
     }
   }
 
@@ -44,7 +43,6 @@ export function Analysis({ id }: { id: string | undefined }) {
 
   return (
     <main className="analysis-block">
-      <button onClick={fetchData}>Analyze again</button>
       {analyzed && (
         <>
           <h1>Analyzed info:</h1>
@@ -94,7 +92,10 @@ export function Analysis({ id }: { id: string | undefined }) {
           </div>
         </>
       )}
-      <button onClick={handleDownload}>Download analysis</button>
+      <section className="analysis-buttons">
+        <button onClick={fetchData}>Analyze again</button>
+        <button onClick={handleDownload}>Download analysis</button>
+      </section>
     </main>
   );
 }
