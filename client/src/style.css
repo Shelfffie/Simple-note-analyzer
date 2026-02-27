@@ -34,6 +34,7 @@
 .note-page {
   display: flex;
   flex-direction: row;
+  gap: 50px;
   justify-content: center;
 }
 
@@ -42,9 +43,12 @@
   flex-direction: column;
   box-sizing: border-box;
   gap: 20px;
-  height: 100%;
-  width: 100%;
+  min-height: vh;
+  height: auto;
+  width: 50%;
   padding: 10px;
+  border-radius: 5px;
+  background-color: grey;
 }
 
 .note-info * {
@@ -54,17 +58,15 @@
 
 .title-input {
   height: 80px;
-  width: 50%;
+  width: 98%;
   padding: 5px;
-  color: white;
   font-size: 50px;
-  background-color: grey;
 }
 
 .content-textarea {
   font-size: 30px;
-  height: 400px;
-  width: 50%;
+  flex: 1;
+  width: 100%;
 }
 
 .analysis-block {
@@ -74,5 +76,10 @@
 }
 .analyzed-info {
   display: flex;
+  gap: 50px;
   flex-direction: row;
+  flex-wrap: wrap;
+}
+.analyzed-info * {
+  list-style: none;
 }

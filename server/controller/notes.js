@@ -73,7 +73,6 @@ const updateNote = async (req, res) => {
 const getNoteByIdAndAnalyse = async (req, res) => {
   try {
     const myUrl = new URL(req.url, `http://${req.headers.host}`);
-    console.log(myUrl);
     const noteId = myUrl.pathname.split("/")[2];
     const details = myUrl.searchParams.get("analysis");
     const note = await Note.findById(noteId);

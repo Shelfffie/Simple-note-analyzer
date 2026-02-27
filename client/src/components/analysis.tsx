@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Analyzed } from "../types/types";
+import { Analyzed, Note } from "../types/types";
+import { UseBlob } from "../hooks/blob";
 
 export function Analysis({ id }: { id: string | undefined }) {
   const [analyzed, setAnalyzed] = useState<Analyzed>();
-  //const isAnalyzed = useRef<boolean>(false);
+  const [allData, setAllData] = useState<Note>();
+  const { handleDownload } = UseBlob({ dataToLoad: allData });
 
   useEffect(() => {
     fetchData();
@@ -16,9 +18,30 @@ export function Analysis({ id }: { id: string | undefined }) {
     });
     if (response.status === 200) {
       setAnalyzed(response.data.note.analyzed);
+      setAllData(response.data.note);
       console.log(response.data);
     }
   }
+
+  const getKeyAndValue = (obj: Record<string, unknown>, limit?: number) => {
+    if (!obj || Object.keys(obj).length === 0) {
+      return <p>0</p>;
+    }
+
+    const entries = Object.entries(obj);
+    const sliced = limit ? entries.slice(0, limit) : entries;
+
+    return (
+      <ul>
+        {sliced.map(([k, v]) => (
+          <li key={k}>
+            ' {k} ' : {String(v)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <main className="analysis-block">
       <button onClick={fetchData}>Analyze again</button>
@@ -26,73 +49,52 @@ export function Analysis({ id }: { id: string | undefined }) {
         <>
           <h1>Analyzed info:</h1>
           <div className="analyzed-info">
-            <section>
-              <h3>Symbols:</h3>
-              <h6>Punctuation marks:</h6>
-              <ul>
-                {analyzed?.summ?.punctMarks &&
-                  Object.entries(analyzed.summ.punctMarks).map(([k, v]) => (
-                    <li key={k}>
-                      {k}: {v}
-                    </li>
-                  ))}{" "}
-              </ul>
-              <h6>The first five most common words:</h6>
-              <ul>
-                {analyzed?.summ?.words &&
-                  Object.entries(analyzed.summ.words)
-                    .slice(0, 5)
-                    .map(([k, v]) => (
-                      <li key={k}>
-                        {k}: {v}
-                      </li>
-                    ))}{" "}
-              </ul>
-              <h6>Longest word:</h6>
+            <div>
+              <h2>Symbols and words:</h2>
+              <h4>Punctuation marks:</h4>
+              {getKeyAndValue(analyzed?.summ?.punctMarks)}
+              <h4>The first five most common words:</h4>
+              {getKeyAndValue(analyzed?.summ?.words, 5)}
+              <h4>Longest word:</h4>
               <p>{analyzed?.summ?.longestWord}</p>
-              <h6>Special symbols:</h6>
-              <ul>
-                {analyzed?.summ?.symbols &&
-                  Object.entries(analyzed.summ.symbols).map(([k, v]) => (
-                    <li key={k}>
-                      {k}: {v}
-                    </li>
-                  ))}{" "}
-              </ul>
-              <h6>Numbers:</h6>
-              <ul>
-                {analyzed?.summ?.numbers &&
-                  Object.entries(analyzed.summ.numbers).map(([k, v]) => (
-                    <li key={k}>
-                      {k}: {v}
-                    </li>
-                  ))}{" "}
-              </ul>
-            </section>
-            <section>
-              <h3>Sentiments:</h3>
-              <h6>
+              <h4>Special symbols:</h4>
+              {getKeyAndValue(analyzed?.summ?.symbols)}
+              <h4>Numbers:</h4>
+              {getKeyAndValue(analyzed?.summ?.numbers)}
+            </div>
+            <div>
+              <h2>Sentiments:</h2>
+              <h4>
                 Score: <span>{analyzed.result.score}</span>
-              </h6>
-              <h6>
-                Comparative:<span>{analyzed.result.comparative}</span>
-              </h6>
-              <h6>Positive words:</h6>{" "}
-              <p>
-                {analyzed.result.positive.length > 0
-                  ? analyzed.result.positive.length
-                  : 0}{" "}
-              </p>
-              <h6>Negative words:</h6>{" "}
-              <p>
-                {analyzed.result.negative.length > 0
-                  ? analyzed.result.negative.length
-                  : 0}
-              </p>
-            </section>
+              </h4>
+              <h4>
+                Comparative: <span>{analyzed.result.comparative}</span>
+              </h4>
+              <h4>Positive words:</h4>
+              {analyzed?.result?.positive.length > 0 ? (
+                <ul>
+                  {analyzed.result.positive.map((p, index) => (
+                    <li key={index}>{p}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>0</p>
+              )}
+              <h4>Negative words:</h4>
+              {analyzed?.result?.negative.length > 0 ? (
+                <ul>
+                  {analyzed.result.negative.map((p, index) => (
+                    <li key={index}> {p} </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>0</p>
+              )}
+            </div>
           </div>
         </>
       )}
+      <button onClick={handleDownload}>Download analysis</button>
     </main>
   );
 }
