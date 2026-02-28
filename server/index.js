@@ -1,3 +1,4 @@
+import "dotenv/config";
 import http from "http";
 import {
   updateNote,
@@ -8,12 +9,12 @@ import {
 } from "./controller/notes.js";
 import connectDB from "./database/connect.js";
 
-const PORT = 3010;
+const PORT = process.env.PORT;
 
 connectDB();
 
 const server = http.createServer((req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL);
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
@@ -48,6 +49,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log("Server is running!");
 });

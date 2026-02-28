@@ -8,6 +8,7 @@ import { handleAxiosError } from "../utils/handle-axios.errors";
 import { useNavigate } from "react-router-dom";
 
 export function GetNote() {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [note, setNote] = useState<Note>({
     _id: "",
     title: "",
@@ -23,7 +24,7 @@ export function GetNote() {
   useEffect(() => {
     const getNote = async () => {
       try {
-        const response = await axios.get(`http://localhost:3010/note/${id}`);
+        const response = await axios.get(`${apiUrl}/note/${id}`);
         if (response.status === 200) {
           setNote(response.data.note);
           setOriginalNote(response.data.note);
@@ -45,7 +46,7 @@ export function GetNote() {
       return;
     const printReq = async () => {
       try {
-        await axios.put(`http://localhost:3010/note/${id}`, {
+        await axios.put(`${apiUrl}/note/${id}`, {
           title: debouncedNote.title.trim(),
           content: debouncedNote.content.trim(),
         });
@@ -71,7 +72,7 @@ export function GetNote() {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3010/note/${id}`);
+      const response = await axios.delete(`${apiUrl}/note/${id}`);
       if (response.status === 200) {
         navigate("/");
       }

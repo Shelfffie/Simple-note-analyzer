@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { handleAxiosError } from "../utils/handle-axios.errors";
 
 function GetNotes() {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [notes, setNotes] = useState<Note[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getNotes = async () => {
       try {
-        const response = await axios.get("http://localhost:3010/note");
+        const response = await axios.get(`${apiUrl}/note`);
         if (response.status === 200) {
           setNotes(response.data);
         }
@@ -25,7 +26,7 @@ function GetNotes() {
 
   const createNewNote = async () => {
     try {
-      const response = await axios.post("http://localhost:3010/note");
+      const response = await axios.post(`${apiUrl}/note`);
       if (response.status === 201) {
         setNotes((prev) => [...prev, response.data.note]);
       }

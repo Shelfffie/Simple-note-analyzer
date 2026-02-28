@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-const url = "mongodb://localhost:27017/notes_analytics_database";
+import "dotenv/config";
+const url = process.env.MONGO_URL;
 
 const connectDB = async () => {
   try {

@@ -5,6 +5,7 @@ import { UseBlob } from "../hooks/blob";
 import { handleAxiosError } from "../utils/handle-axios.errors";
 
 export function Analysis({ id }: { id: string | undefined }) {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [analyzed, setAnalyzed] = useState<Analyzed>();
   const [allData, setAllData] = useState<Note>();
   const { handleDownload } = UseBlob({ dataToLoad: allData });
@@ -15,7 +16,7 @@ export function Analysis({ id }: { id: string | undefined }) {
 
   async function fetchData() {
     try {
-      const response = await axios.get(`http://localhost:3010/note/${id}`, {
+      const response = await axios.get(`${apiUrl}/note/${id}`, {
         params: { analysis: true },
       });
       if (response.status === 200) {
