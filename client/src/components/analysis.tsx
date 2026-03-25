@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Analyzed, Note } from "../types/types";
-import { UseBlob } from "../hooks/blob";
+import { CreateBlob } from "../utils/blob";
 import { handleAxiosError } from "../utils/handle-axios.errors";
 
 export function Analysis({ id }: { id: string | undefined }) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [analyzed, setAnalyzed] = useState<Analyzed>();
   const [allData, setAllData] = useState<Note>();
-  const { handleDownload } = UseBlob({ dataToLoad: allData });
+  const { handleDownload } = CreateBlob({ dataToLoad: allData });
 
   useEffect(() => {
     fetchData();

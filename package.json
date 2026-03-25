@@ -1,0 +1,16 @@
+{
+  "name": "real-time_collaborative_code_editor",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "dev:client": "vite --config client/vite.config.ts",
+    "dev:server": "npm run dev --workspace=backend"
+  }
+}
